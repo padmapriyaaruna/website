@@ -29,8 +29,9 @@ const ChatWidget = () => {
         setIsLoading(true);
 
         try {
-            // Replace with your actual backend URL if different
-            const response = await fetch('http://localhost:8000/chat', {
+            // Use Env Var for Prod, fallback to localhost for Dev
+            const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/\/$/, '');
+            const response = await fetch(`${apiUrl}/chat`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query: userMsg.text })
