@@ -76,8 +76,8 @@ const ChatWidget = () => {
                             {messages.map((msg) => (
                                 <div key={msg.id} className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}>
                                     <div className={`max-w-[80%] p-3 rounded-2xl text-sm leading-relaxed ${msg.sender === 'user'
-                                            ? 'bg-brand-primary text-white rounded-br-none'
-                                            : 'bg-white/10 text-slate-200 rounded-bl-none'
+                                        ? 'bg-brand-primary text-white rounded-br-none'
+                                        : 'bg-white/10 text-slate-200 rounded-bl-none'
                                         } ${msg.isError ? 'bg-red-500/20 text-red-200 border border-red-500/50' : ''}`}>
                                         {msg.text}
                                     </div>

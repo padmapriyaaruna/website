@@ -2,6 +2,14 @@ import os
 import shutil
 from typing import List
 
+# --- CHROMA DB / RENDER FIX ---
+# Render's default SQLite is too old for Chroma.
+# We override it with the binary we installed.
+__import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+# ------------------------------
+
 from fastapi import FastAPI, HTTPException, Body
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
