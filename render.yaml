@@ -10,15 +10,12 @@ services:
         value: 3.9.0
       - key: GROQ_API_KEY
         sync: false # User must enter this in Dashboard
-    plan: free
 
   # 2. The Frontend (React / Vite)
-  - type: web
+  - type: pwa
     name: patent-frontend
-    env: static
     buildCommand: cd patent-app && npm install && npm run build
-    staticPublishPath: patent-app/dist
+    publishDir: patent-app/dist
     envVars:
       - key: NODE_VERSION
         value: 18.17.0
-    plan: free
