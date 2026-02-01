@@ -21,8 +21,9 @@ from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import RecursiveUrlLoader
-from langchain.chains import RetrievalQA
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
 from bs4 import BeautifulSoup as Soup
 
 # Load Environment Variables (PROD: Set these in Render Dashboard)
@@ -61,6 +62,9 @@ embeddings = FastEmbedEmbeddings(model_name="BAAI/bge-small-en-v1.5")
 # Global Retrieval Chain Placeholder
 qa_chain = None
 
+def format_docs(docs):
+    return "\n\n".join([d.page_content for d in docs])
+
 def get_qa_chain():
     """Lazily load the QA chain to ensure DB is ready."""
     global qa_chain
@@ -68,7 +72,7 @@ def get_qa_chain():
        vectorstore = Chroma(persist_directory=CHROMA_PATH, embedding_function=embeddings)
        retriever = vectorstore.as_retriever(search_kwargs={"k": 3})
        
-       prompt_template = """You are a helpful assistant for a patent website.
+       template = """You are a helpful assistant for a patent website.
        Use the following pieces of context to answer the question at the end.
        If you don't know the answer, just say that you don't know, don't try to make up an answer.
 
@@ -77,15 +81,14 @@ def get_qa_chain():
        Question: {question}
        Answer:"""
        
-       PROMPT = PromptTemplate(
-           template=prompt_template, input_variables=["context", "question"]
-       )
+       prompt = ChatPromptTemplate.from_template(template)
 
-       qa_chain = RetrievalQA.from_chain_type(
-           llm=llm,
-           chain_type="stuff",
-           retriever=retriever,
-           chain_type_kwargs={"prompt": PROMPT}
+       # LCEL Chain: Retriever -> Format -> Prompt -> LLM -> String
+       qa_chain = (
+           {"context": retriever | format_docs, "question": RunnablePassthrough()}
+           | prompt
+           | llm
+           | StrOutputParser()
        )
     return qa_chain
 
@@ -151,8 +154,8 @@ async def chat(request: ChatRequest):
         if not chain:
             raise HTTPException(status_code=400, detail="Knowledge base is empty. Please run /crawl first.")
 
-        response = chain.invoke({"query": request.query})
-        return {"answer": response["result"]}
+        response = chain.invoke(request.query)
+        return {"answer": response}
         
     except Exception as e:
         print(f"Error in chat: {e}")
