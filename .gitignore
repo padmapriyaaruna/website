@@ -1,0 +1,6 @@
+.env
+backend/.env
+patent-app/node_modules
+backend/__pycache__
+backend/chroma_db
+patent-app/dist

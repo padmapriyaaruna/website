@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+beautifulsoup4
+requests
+langchain
+langchain-community
+langchain-groq
+fastembed
+chromadb
+pydantic
+python-multipart
+python-dotenv
