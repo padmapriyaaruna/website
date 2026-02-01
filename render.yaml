@@ -12,10 +12,11 @@ services:
         sync: false # User must enter this in Dashboard
 
   # 2. The Frontend (React / Vite)
-  - type: pwa
+  - type: web
     name: patent-frontend
+    env: static
     buildCommand: cd patent-app && npm install && npm run build
-    publishDir: patent-app/dist
+    staticPublishPath: patent-app/dist
     envVars:
       - key: NODE_VERSION
         value: 18.17.0
