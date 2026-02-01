@@ -49,10 +49,10 @@ if not GROQ_API_KEY:
     print("WARNING: GROQ_API_KEY is missing. Chat will fail.")
 
 # Initialize AI Components
-# 1. LLM: Groq (Llama3-8b-8192 is free & fast)
+# 1. LLM: Groq (Llama3-70b is supported and powerful)
 llm = ChatGroq(
     temperature=0, 
-    model_name="llama3-8b-8192", 
+    model_name="llama3-70b-8192", 
     api_key=GROQ_API_KEY
 )
 
