@@ -10,6 +10,7 @@ services:
         value: 3.9.0
       - key: GROQ_API_KEY
         sync: false # User must enter this in Dashboard
+    plan: free
 
   # 2. The Frontend (React / Vite)
   - type: web
