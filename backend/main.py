@@ -20,7 +20,7 @@ from langchain_groq import ChatGroq
 from langchain_community.embeddings.fastembed import FastEmbedEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain.document_loaders import RecursiveUrlLoader
+from langchain_community.document_loaders import RecursiveUrlLoader
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
 from bs4 import BeautifulSoup as Soup

@@ -5,6 +5,7 @@ requests
 langchain
 langchain-community
 langchain-groq
+langchain-text-splitters
 fastembed
 chromadb
 pydantic
