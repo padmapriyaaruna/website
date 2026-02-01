@@ -16,7 +16,7 @@ services:
   - type: web
     name: patent-frontend
     env: static
-    rootDir: patent-app
+    root: patent-app
     buildCommand: npm install && npm run build
     staticPublishPath: dist
     envVars:
